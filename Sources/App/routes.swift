@@ -5,14 +5,18 @@ import Vapor
 ///
 /// [Learn More →](https://docs.vapor.codes/3.0/getting-started/structure/#routesswift)
 public func routes(_ router: Router) throws {
-    // Basic "Hello, world!" example
-    router.get("hello") { req in
-        return "Hello, world!"
-    }
-
-    // Example of configuring a controller
-    let todoController = TodoController()
-    router.get("todos", use: todoController.index)
-    router.post("todos", use: todoController.create)
-    router.delete("todos", Todo.parameter, use: todoController.delete)
+    
+    let acronymsController = AcronymsController()
+    try router.register(collection: acronymsController)
+    
+    let usersController = UsersController()
+    try router.register(collection: usersController)
+    
+    let categoriesController = CategoriesController()
+    try router.register(collection: categoriesController)
+    
+    let websiteController = WebsiteController()
+    try router.register(collection: websiteController)
+    
+    
 }

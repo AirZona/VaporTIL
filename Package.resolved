@@ -47,12 +47,12 @@
         }
       },
       {
-        "package": "FluentSQLite",
-        "repositoryURL": "https://github.com/vapor/fluent-sqlite.git",
+        "package": "FluentPostgreSQL",
+        "repositoryURL": "https://github.com/vapor/fluent-postgresql.git",
         "state": {
           "branch": null,
-          "revision": "963f1ecd6fd219058d80cf251df355c3b13a0046",
-          "version": "3.0.0-rc.2.1"
+          "revision": "e7011affaac21c60ce417139a376be8f21fd5815",
+          "version": "1.0.0-rc.2.1.1"
         }
       },
       {
@@ -65,12 +65,30 @@
         }
       },
       {
+        "package": "Leaf",
+        "repositoryURL": "https://github.com/vapor/leaf.git",
+        "state": {
+          "branch": null,
+          "revision": "8cc35dcfcd8f9ed142a954f70431a05e866ca040",
+          "version": "3.0.0-rc.2.1.2"
+        }
+      },
+      {
         "package": "Multipart",
         "repositoryURL": "https://github.com/vapor/multipart.git",
         "state": {
           "branch": null,
           "revision": "d7b641af117910e66781022c1c82638216cad62c",
           "version": "3.0.0"
+        }
+      },
+      {
+        "package": "PostgreSQL",
+        "repositoryURL": "https://github.com/vapor/postgresql.git",
+        "state": {
+          "branch": null,
+          "revision": "388346471c6a89c2695235d8ffff43c5941283af",
+          "version": "1.0.0-rc.2.0.3"
         }
       },
       {
@@ -89,15 +107,6 @@
           "branch": null,
           "revision": "281a70b69783891900be31a9e70051b6fe19e146",
           "version": "1.0.0"
-        }
-      },
-      {
-        "package": "SQLite",
-        "repositoryURL": "https://github.com/vapor/sqlite.git",
-        "state": {
-          "branch": null,
-          "revision": "2a55a4e727584114aa6993903af09df9c771ae05",
-          "version": "3.0.0-rc.2.2"
         }
       },
       {
