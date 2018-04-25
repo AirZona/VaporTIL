@@ -27,6 +27,12 @@
         <li class="nav-item #if(title == "Create An Acronym"){active}">
           <a href="/create-acronym" class="nav-link">Create An Acronym</a>
         </li>
+        <li class="nav-item #if(title == "Log In"){active}">
+          <a href="/login" class="nav-link">Log In</a>
+        </li>
+        <li class="nav-item #if(title == "Sign Up"){active}">
+          <a href="/register" class="nav-link">Sign Up</a>
+        </li>
       </ul>
     </div>
   </nav>

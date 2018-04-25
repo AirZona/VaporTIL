@@ -1,6 +1,7 @@
 import Vapor
 import FluentPostgreSQL
 import Leaf
+import Authentication
 
 /// Called before your application initializes.
 ///
@@ -11,19 +12,17 @@ public func configure(
     _ services: inout Services
 ) throws {
     /// Register providers first
+    try services.register(FluentProvider())
     try services.register(FluentPostgreSQLProvider())
     try services.register(LeafProvider())
-
-    /// Register routes to the router
-    let router = EngineRouter.default()
-    try routes(router)
-    services.register(router, as: Router.self)
+    try services.register(AuthenticationProvider())
 
     /// Register middleware
     var middlewares = MiddlewareConfig() // Create _empty_ middleware config
     middlewares.use(FileMiddleware.self) // Serves files from `Public/` directory
     middlewares.use(DateMiddleware.self) // Adds `Date` header to responses
     middlewares.use(ErrorMiddleware.self) // Catches errors and converts to HTTP response
+    middlewares.use(SessionsMiddleware.self)
     services.register(middlewares)
 
     /// Register custom PostgreSQL Config
@@ -36,6 +35,14 @@ public func configure(
     migrations.add(model: User.self, database: .psql)
     migrations.add(model: Category.self, database: .psql)
     migrations.add(model: AcronymCategoryPivot.self, database: .psql)
+    migrations.add(model: Token.self, database: .psql)
     services.register(migrations)
 
+    User.Public.defaultDatabase = .psql
+    
+    /// Register routes to the router
+    let router = EngineRouter.default()
+    try routes(router)
+    services.register(router, as: Router.self)
+    
 }

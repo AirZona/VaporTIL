@@ -6,14 +6,17 @@ struct AcronymsController: RouteCollection {
     func boot(router: Router) throws {
         let acroynmsRoute = router.grouped("api", "acronyms")
         acroynmsRoute.get(use: getAllHandler)
-        acroynmsRoute.post(use: createHandler)
         acroynmsRoute.get(Acronym.parameter, use: getHandler)
-        acroynmsRoute.delete(Acronym.parameter, use: deleteHandler)
-        acroynmsRoute.put(Acronym.parameter, use: updateHandler)
         acroynmsRoute.get(Acronym.parameter, "creator", use: getCreatorHandler)
         acroynmsRoute.get(Acronym.parameter, "categories", Category.parameter, use: getCategoriesHandler)
         acroynmsRoute.post(Acronym.parameter, "categories", Category.parameter, use: addCategoriesHandler)
         acroynmsRoute.get("search", use: searchHandler)
+        
+        let tokenAuthMiddleware = User.tokenAuthMiddleware()
+        let tokenAuthGroup = acroynmsRoute.grouped(tokenAuthMiddleware)
+        tokenAuthGroup.post(use:createHandler)
+        tokenAuthGroup.delete(Acronym.parameter, use: deleteHandler)
+        tokenAuthGroup.put(Acronym.parameter, use: updateHandler)
     }
     
     func getAllHandler(_ req: Request) throws -> Future<[Acronym]> {
@@ -21,8 +24,11 @@ struct AcronymsController: RouteCollection {
     }
     
     func createHandler(_ req: Request) throws -> Future<Acronym> {
-        let acronym = try req.content.decode(Acronym.self)
-        return acronym.save(on: req)
+        return try req.content.decode(AcronymCreateData.self).flatMap(to: Acronym.self) { acronymData in
+            let user = try req.requireAuthenticated(User.self)
+            let acronym = try Acronym(short: acronymData.short, long: acronymData.long, creatorID: user.requireID())
+            return acronym.save(on: req)
+        }
     }
     
     func getHandler(_ req: Request) throws -> Future<Acronym> {
@@ -76,3 +82,8 @@ struct AcronymsController: RouteCollection {
 }
 
 extension Acronym: Parameter {}
+
+struct AcronymCreateData: Content {
+    let short: String
+    let long: String
+}
